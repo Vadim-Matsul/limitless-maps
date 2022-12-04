@@ -1,5 +1,5 @@
 import React from 'react';
-import { DetailedProps } from '../../types';
+import { DetailedProps } from '../../types/types';
 
 type MapProps = DetailedProps<{}, HTMLDivElement>
 

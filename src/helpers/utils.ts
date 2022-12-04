@@ -1,3 +1,4 @@
+
 type Button = HTMLButtonElement | undefined;
 
 export const checkMapButtonError = (
@@ -22,3 +23,5 @@ export const checkMapButtonError = (
   })();
 
 });
+
+export const narrowStringType = <T extends string>(str: T) => str;

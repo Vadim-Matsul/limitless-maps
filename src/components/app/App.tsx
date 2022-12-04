@@ -6,7 +6,6 @@ import Map from '../map/Map';
 import style from './App.module.css';
 import '../../index.css';
 import ErrorBoundaries from '../../hoc/ErrorBoundaries';
-
 const MAP_KEY = process.env.REACT_APP_MAP_KEY;
 const libraries = ['places'] as ['places'];
 
@@ -15,8 +14,9 @@ const App: React.FC = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'test',
     googleMapsApiKey: MAP_KEY!,
-    libraries
+    libraries,
   });
+
 
   return (
     <div className={style.app}>

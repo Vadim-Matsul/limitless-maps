@@ -6,4 +6,7 @@ export type DetailedProps<
 > = Props & DetailedHTMLProps<
   HTMLAttributes<Element>,
   Element
->
+>;
+
+
+

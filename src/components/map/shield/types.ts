@@ -1,4 +1,4 @@
-import { DetailedProps } from '../../../types';
+import { DetailedProps } from '../../../types/types';
 
 type Props = {
   text: string,
