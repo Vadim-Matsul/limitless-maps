@@ -1,0 +1,44 @@
+.app {
+  display: grid;
+  grid-template:
+    ". . ." 0
+    ". map ." minmax(200px, calc(50vh - (2 * 1rem)))
+    ". data ." minmax(200px, calc(50vh - 1rem))
+    ". . ." 0 / auto minmax(600px, 1200px) auto;
+  gap: 1rem;
+}
+
+.map {
+  position: relative;
+
+  grid-area: map;
+  border-radius: .5em;
+  padding: .3em;
+
+  overflow: hidden;
+  background: var(--white);
+}
+
+.data {
+  grid-area: data;
+  
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, minmax(calc(100px - .25rem), calc(25vh - .75rem)));
+  gap: .5rem;
+
+  padding-left: 1.5rem;
+
+  border-left: 3px solid var(--white);
+  border-radius: .2em;
+}
+
+.marked {
+  background: var(--white);
+  border-radius: .5em;
+}
+
+.labels {
+  background: var(--white);
+  border-radius: .5em;
+}
