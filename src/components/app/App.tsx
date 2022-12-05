@@ -6,6 +6,8 @@ import Map from '../map/Map';
 import style from './App.module.css';
 import '../../index.css';
 import ErrorBoundaries from '../../hoc/ErrorBoundaries';
+import { MarkersStorage } from '../../helpers/sessionStorage';
+import { InitMarkerData } from '../../types/marker';
 const MAP_KEY = process.env.REACT_APP_MAP_KEY;
 const libraries = ['places'] as ['places'];
 

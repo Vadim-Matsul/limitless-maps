@@ -5,6 +5,11 @@ export const config = {
   sww: 'Something went wrong',
   mapInitProcess: 'initialization process',
   staticIconPath: '/devvela.svg',
+  modal: {
+    placeholder: 'Enter the marker title',
+    successText: 'OK',
+    rejectText: 'CANCEL',
+  },
 };
 
 export const mapOptions: google.maps.MapOptions = {
@@ -12,11 +17,6 @@ export const mapOptions: google.maps.MapOptions = {
   fullscreenControl: false,
   scrollwheel: false,
   zoomControl: true,
-};
-
-export const initialCenter = {
-  lat: 55.75400661415227,
-  lng: 37.61661170356091
 };
 
 export const mapInitialData = {

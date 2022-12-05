@@ -1,9 +1,9 @@
-type Location = {
+export type Location = {
   lat: number;
   lng: number;
 };
 
-type Label = {
+export type Label = {
   name: string;
 };
 
@@ -11,7 +11,9 @@ export type Marker = {
   location: Location;
   labels: Label[];
   title: string;
-  id?: number;
+  id: string;
 };
 
 export type Markers = Marker[];
+
+export type InitMarkerData = Pick<Marker, 'location' | 'title'>;

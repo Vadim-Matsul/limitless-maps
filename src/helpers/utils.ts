@@ -25,3 +25,4 @@ export const checkMapButtonError = (
 });
 
 export const narrowStringType = <T extends string>(str: T) => str;
+export const delSpaces = (str: string): string => str.trim().replace(/\s+/g, ' ');

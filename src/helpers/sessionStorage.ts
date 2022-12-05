@@ -1,12 +1,12 @@
-import { Marker, Markers } from '../types/marker';
+import { InitMarkerData, Marker, Markers } from '../types/marker';
 import { narrowStringType } from './utils';
+
 
 
 export class MarkersStorage {
 
   static #key = narrowStringType('MARKERS');
   #markers: Markers;
-  #lastMarkerId: number = 0;
 
 
   constructor() {
@@ -15,18 +15,18 @@ export class MarkersStorage {
 
 
   getMarkers(): Markers {
-    return this.#markers;
+    return JSON.parse(JSON.stringify(this.#markers));
   };
 
 
-  setMarker(marker: Marker): number {
-    this.#lastMarkerId++;
-    marker.id = this.#lastMarkerId;
+  createMarker(data: InitMarkerData): Marker {
+    const id = crypto.randomUUID();
+    const marker: Marker = { ...data, labels: [], id };
 
     this.#markers.push(marker);
-    MarkersStorage.#setStorageMarkers(this.#markers);
 
-    return this.#lastMarkerId;
+    MarkersStorage.#setStorageMarkers(this.#markers);
+    return marker;
   };
 
 
@@ -42,6 +42,7 @@ export class MarkersStorage {
 
   static #getMarkers(): Markers {
     const data = this.#parse(sessionStorage.getItem(this.#key));
+
     if (data === null) {
       this.#setStorageMarkers([]);
       return [];
