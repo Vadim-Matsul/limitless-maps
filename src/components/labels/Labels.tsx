@@ -9,10 +9,11 @@ import style from './Labels.module.css';
 import { createModal } from '../map/createModal';
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { delSpaces } from '../../helpers/utils';
+import { EditHandler } from '../../types/types';
 
 const Labels: React.FC<LabelsProps> = (props) => {
   const { className } = props;
-  const { markers, activeMarker, dispatch, storage } = useContext(MapContext);
+  const { markers, activeMarker, dispatch, storage, map } = useContext(MapContext);
   const marker = markers.find(marker => marker.id === activeMarker);
 
   const handleItemClick = useCallback(() => {
@@ -41,6 +42,11 @@ const Labels: React.FC<LabelsProps> = (props) => {
     ${style.add_label}
   `;
 
+  const handleEditLabel: EditHandler = useCallback((bundle) => {
+    const response = storage.editLabelTitle(bundle);
+    response && dispatch(ACTIONS_CREATORS.editLabelTitle(response));
+  }, []);
+
   return (
     <div className={className} >
       <div>
@@ -61,6 +67,8 @@ const Labels: React.FC<LabelsProps> = (props) => {
                 activeMarker={activeMarker}
                 emptyText={config.list.label.empty}
                 storage={storage}
+                onEdit={handleEditLabel}
+                map={map}
               />
             </>
             :

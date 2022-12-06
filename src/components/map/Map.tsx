@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { GoogleMap } from '@react-google-maps/api';
-import { LoadCB, MapProps, MapReady, MapRef } from './types';
+import { LoadCB, MapProps, MapReady, MapT } from './types';
 import { checkMapButtonError, delSpaces } from '../../helpers/utils';
 import { config, mapInitialData, mapOptions } from '../../helpers/const';
 import Shield from './shield/Shield';
@@ -20,12 +20,12 @@ let shieldText: string = config.mapInitProcess;
 const Map: React.FC<MapProps> = (props) => {
   const { className } = props;
 
-  const mapRef = useRef<MapRef>(null);
+  const mapRef = useRef<MapT>(null);
   const listenerMapRef = useRef<GMaps_MapsEventListener[]>([]);
 
   const [mapReady, setMapReady] = useState<MapReady>(null);
   const [, setForce] = useState<number>(0);
-  const { markers, dispatch, storage, activeMarker } = useContext(MapContext);
+  const { markers, dispatch, storage } = useContext(MapContext);
 
 
   const MARKERS = useMemo(() => {

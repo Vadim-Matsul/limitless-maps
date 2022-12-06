@@ -23,3 +23,14 @@ export type MarkerCenterData = {
   id: string;
   location: Location;
 };
+
+export type EditLabelData = {
+  label: Label,
+  m_inx: number,
+  l_inx: number,
+};
+
+export type EditMarkerData = {
+  marker: Marker,
+  m_inx: number,
+};

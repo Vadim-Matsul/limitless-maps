@@ -1,4 +1,5 @@
 import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { A_Marker } from './state-manager';
 
 export type DetailedProps<
   Props = Record<string, any>,
@@ -7,6 +8,10 @@ export type DetailedProps<
   HTMLAttributes<Element>,
   Element
 >;
+
+export type EditData = { value: string, id: string, activeMarker: A_Marker };
+export type EditHandler = (bundle: EditData) => void;
+
 
 export type GMaps_MouseEvent = google.maps.MapMouseEvent;
 export type GMaps_LatLng = google.maps.LatLng;

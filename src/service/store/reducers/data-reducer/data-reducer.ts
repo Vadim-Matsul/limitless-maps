@@ -17,6 +17,17 @@ export const dataReducer = (state: DataSlice, action: Actions): DataSlice => {
       markers.splice(id, 1, marker);
       return { markers };
 
+    case AsT['EDIT_LABEL_TITLE']:
+      const { label, m_inx: marker_index, l_inx } = action.payload;
+      state.markers[marker_index]['labels'][l_inx] = label;
+      return { markers: state.markers };
+
+    case AsT['EDIT_MARKER_TITLE']:
+      const { marker: mrkr, m_inx } = action.payload;
+      state.markers[m_inx] = mrkr;
+      return { markers: state.markers };
+
+
     default: return state;
 
   }

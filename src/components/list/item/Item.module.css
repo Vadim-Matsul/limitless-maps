@@ -48,3 +48,29 @@
     0 0 80px var(--purple-tr), 
     0 0 160px var(--purple-tr);
 }
+
+.title {
+  font-family: var(--font-family);
+
+  width: 220px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 5px;
+
+  text-align: left;
+  border: none;
+  outline: none;
+
+  background: transparent;
+  caret-color: transparent;
+  cursor: default;
+}
+
+.title_wrap {
+  display: flex;
+  /* background: black; */
+}
+
+.title_active {
+  caret-color: black;
+}

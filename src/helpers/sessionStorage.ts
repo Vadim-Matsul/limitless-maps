@@ -1,6 +1,8 @@
-import { InitMarkerData, Label, Marker, MarkerCortege, Markers } from '../types/marker';
+import { EditLabelData, EditMarkerData, InitMarkerData, Label, Marker, MarkerCortege, Markers } from '../types/marker';
 import { A_Marker } from '../types/state-manager';
+import { EditData } from '../types/types';
 import { narrowStringType } from './utils';
+
 
 
 
@@ -31,23 +33,37 @@ export class MarkersStorage {
   };
 
   createLabel(markerId: A_Marker, title: string): MarkerCortege | undefined {
-    let markerIndex: number;
-    const marker = this.#markers.find((m, i) => {
-      if (m.id === markerId) {
-        markerIndex = i;
-        return true;
-      }
-      return false;
-    });
-
-
-    if (marker && markerIndex! !== undefined) {
+    const [marker, index_m] = this.#find<Marker>(this.#markers, markerId);
+    if (marker && index_m! !== undefined) {
       const labelId = crypto.randomUUID();
       marker.labels.push({ id: labelId, title });
-
-      this.#markers.splice(markerIndex, 1, marker);
+      this.#markers.splice(index_m, 1, marker);
       MarkersStorage.#setStorageMarkers(this.#markers);
-      return [marker, markerIndex];
+      return [marker, index_m];
+    }
+  }
+
+  editLabelTitle({ value, id, activeMarker }: EditData): EditLabelData | undefined {
+    const [marker, index_m] = this.#find<Marker>(this.#markers, activeMarker);
+    if (marker && index_m !== undefined) {
+      const [label, index_l] = this.#find<Label>(marker.labels, id);
+      if (label && index_l !== undefined) {
+        label.title = value;
+        marker.labels.splice(index_l, 1, label);
+        this.#markers.splice(index_m, 1, marker);
+        MarkersStorage.#setStorageMarkers(this.#markers);
+        return { label, m_inx: index_m, l_inx: index_l };
+      }
+    }
+  }
+
+  editMarkerTitle({ value, id }: Omit<EditData, 'activeMarker'>): EditMarkerData | undefined {
+    const [marker, index_m] = this.#find<Marker>(this.#markers, id);
+    if (marker && index_m !== undefined) {
+      marker.title = value;
+      this.#markers.splice(index_m, 1, marker);
+      MarkersStorage.#setStorageMarkers(this.#markers);
+      return { marker, m_inx: index_m };
     }
   }
 
@@ -60,6 +76,20 @@ export class MarkersStorage {
     return filtered;
   };
 
+  #find<
+    R extends Marker | Label
+  >(scope: R[], id: string | A_Marker): [R | undefined, number | undefined] {
+    let INDEX: number | undefined;
+    const result = scope.find((item, index) => {
+      if (item.id === id) {
+        INDEX = index;
+        return true;
+      }
+      return false;
+    });
+
+    return [result, INDEX];
+  }
 
   static #getMarkers(): Markers {
     const data = this.#parse(sessionStorage.getItem(this.#key));

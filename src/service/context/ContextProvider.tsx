@@ -3,7 +3,7 @@ import { createContext, useEffect, useMemo, useReducer } from 'react';
 import type { PropsWithChildren } from 'react';
 import { mainReducer } from '../store/reducers/main-reducer';
 import { MarkersStorage } from '../../helpers/sessionStorage';
-import { Scope } from '../../types/state-manager';
+import { RootState, Scope } from '../../types/state-manager';
 import { Markers } from '../../types/marker';
 import { ACTIONS_CREATORS } from '../store/actions/actions';
 
@@ -11,14 +11,16 @@ import { ACTIONS_CREATORS } from '../store/actions/actions';
 export const storage = new MarkersStorage();
 const markers: Markers = [];
 const activeMarker = null;
+const map = null;
 
-const initialState = { logic: { activeMarker, }, data: { markers, }, };
+const initialState: RootState = { logic: { activeMarker, map }, data: { markers, }, };
 
 export const MapContext = createContext<Scope>({
   storage,
   markers,
   activeMarker,
   dispatch: () => null,
+  map
 });
 
 
@@ -37,10 +39,10 @@ const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <MapContext.Provider
       value={{
         activeMarker: state.logic.activeMarker,
-        markers: memo_markers,
+        markers: state.data.markers,
         dispatch,
         storage,
-        map: null,
+        map: state.logic.map
       }}
     >
       {children}

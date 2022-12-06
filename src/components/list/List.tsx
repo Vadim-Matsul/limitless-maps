@@ -5,11 +5,9 @@ import Item from './item/Item';
 
 import style from './List.module.css';
 import Empty from './empty/Empty';
-import { useCallback } from 'react';
-import { createModal } from '../map/createModal';
 
 const List: React.FC<ListProps> = (props) => {
-  const { storage, i_data, onItemClick, activeMarker, isMark = true, emptyText, onCheckClick } = props;
+  const { storage, i_data, onItemClick, activeMarker, isMark = true, emptyText, onCheckClick, onEdit, map } = props;
 
 
   return (
@@ -26,6 +24,8 @@ const List: React.FC<ListProps> = (props) => {
                 isMark={isMark}
                 activeMarker={activeMarker}
                 onCheckClick={onCheckClick}
+                onEdit={onEdit}
+                map={map}
               />
             ))
             :
