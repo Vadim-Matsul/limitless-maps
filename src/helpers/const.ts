@@ -6,11 +6,21 @@ export const config = {
   mapInitProcess: 'initialization process',
   staticIconPath: '/devvela.svg',
   modal: {
-    placeholder: 'Enter the marker title',
+    placeholder: 'Enter the title',
     successText: 'OK',
     rejectText: 'CANCEL',
   },
-  vanillaTitle: 'I am a marker!'
+  vanillaMarkerTitle: 'I am a marker!',
+  vanillaLabelTitle: 'I am a label!',
+  list: {
+    label: {
+      nothing: 'Select a marker to see the labels',
+      empty: 'You don`t have any labels yet'
+    },
+    marks: {
+      empty: 'You don`t have any markers yet'
+    }
+  }
 };
 
 export const mapOptions: google.maps.MapOptions = {

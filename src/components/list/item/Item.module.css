@@ -13,6 +13,12 @@
   background: var(--purple-tr);
 }
 
+.item_check {
+  background: var(--green);
+}
+
+.item_check
+
 .item:last-child {
   margin-bottom: 0;
 }

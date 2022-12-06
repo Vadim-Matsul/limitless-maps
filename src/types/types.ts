@@ -11,4 +11,5 @@ export type DetailedProps<
 export type GMaps_MouseEvent = google.maps.MapMouseEvent;
 export type GMaps_LatLng = google.maps.LatLng;
 export type GMaps_Marker = google.maps.Marker;
+export type GMaps_Map = google.maps.Map;
 export type GMaps_MapsEventListener = google.maps.MapsEventListener;

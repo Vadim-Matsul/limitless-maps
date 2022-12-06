@@ -27,6 +27,7 @@ const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const memo_markers = useMemo(() => state.data.markers, [state.data.markers]);
   // const memo_activeMarker = useMemo(() => state.logic.activeMarker, [state.logic.activeMarker]);
 
+
   useEffect(() => {
     const init_markers = storage.getMarkers();
     dispatch(ACTIONS_CREATORS.initializationMarkers(init_markers));
@@ -39,6 +40,7 @@ const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         markers: memo_markers,
         dispatch,
         storage,
+        map: null,
       }}
     >
       {children}

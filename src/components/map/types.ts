@@ -1,10 +1,9 @@
-import { DetailedProps } from '../../types/types';
+import { DetailedProps, GMaps_Map } from '../../types/types';
 
 export type MapProps = DetailedProps<{}, HTMLElement>;
 
-type GoogleMap = google.maps.Map;
-type MapRef = GoogleMap | null;
-type LoadCB = (map: GoogleMap) => void;
+type MapRef = GMaps_Map | null;
+type LoadCB = (map: GMaps_Map) => void;
 type MapReady = null | boolean;
 
 export type { MapRef, LoadCB, MapReady };

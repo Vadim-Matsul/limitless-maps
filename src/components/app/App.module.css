@@ -34,17 +34,23 @@
 }
 
 .marks {
-  padding: .5em;
-  overflow: scroll;
+  position: relative;
+
+  overflow-y: auto;
   overflow-x: hidden;
+
+  padding: 1em 1.8em;
 
   border-radius: .5em;
   background: var(--white);
 }
 
 .labels {
-  padding: .5em;
+  position: relative;
 
+  overflow: hidden;
+
+  padding: 1em 1.8em;
   border-radius: .5em;
   background: var(--white);
 }

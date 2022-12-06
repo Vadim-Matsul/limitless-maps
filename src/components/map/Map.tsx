@@ -27,7 +27,6 @@ const Map: React.FC<MapProps> = (props) => {
   const [, setForce] = useState<number>(0);
   const { markers, dispatch, storage, activeMarker } = useContext(MapContext);
 
-  console.log('ActiveMarke: ', activeMarker);
 
   const MARKERS = useMemo(() => {
     const MARKERS_arr: GMaps_Marker[] = [];
@@ -49,8 +48,6 @@ const Map: React.FC<MapProps> = (props) => {
     return MARKERS_arr;
   }, [markers]);
 
-
-  console.log(listenerMapRef.current.length);
 
 
   const clearListeners = useCallback(() => {
@@ -92,6 +89,7 @@ const Map: React.FC<MapProps> = (props) => {
       .then(
         res => {
           mapRef.current = map;
+          dispatch(ACTIONS_CREATORS.setMap(mapRef.current));
           setMapReady(res);
         },
         rej => {
@@ -113,7 +111,7 @@ const Map: React.FC<MapProps> = (props) => {
         .then(
           (init) => {
             let title = delSpaces(init!);
-            if (!title.length) title = config.vanillaTitle;
+            if (!title.length) title = config.vanillaMarkerTitle;
             const data: InitMarkerData = { location: { lat, lng }, title };
             const marker = storage.createMarker(data);
             return dispatch(ACTIONS_CREATORS.createMarker(marker));
@@ -125,6 +123,7 @@ const Map: React.FC<MapProps> = (props) => {
     }
     // !.... 
   }, []);
+
 
 
   return (

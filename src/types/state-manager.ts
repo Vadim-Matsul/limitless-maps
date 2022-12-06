@@ -1,9 +1,10 @@
 import { Dispatch } from 'react';
+import { MapRef } from '../components/map/types';
 import { MarkersStorage } from '../helpers/sessionStorage';
 import { Actions } from '../service/store/actions/actions';
 import { Markers } from './marker';
 
-type A_Marker = string | null;
+export type A_Marker = string | null;
 
 export type DataSlice = {
   markers: Markers;
@@ -11,6 +12,7 @@ export type DataSlice = {
 
 export type LogicSlice = {
   activeMarker: A_Marker;
+  map: MapRef;
 };
 
 export type RootState = {

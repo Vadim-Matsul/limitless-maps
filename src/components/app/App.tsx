@@ -7,6 +7,7 @@ import style from './App.module.css';
 import '../../index.css';
 import ErrorBoundaries from '../../hoc/ErrorBoundaries';
 import Marked from '../marks';
+import Labels from '../labels';
 
 
 const MAP_KEY = process.env.REACT_APP_MAP_KEY;
@@ -33,7 +34,7 @@ const App: React.FC = () => {
       }
       <div className={style.data}>
         <Marked className={style.marks} />
-        <div className={style.labels} />
+        <Labels className={style.labels} />
       </div>
     </div>
   );

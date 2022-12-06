@@ -1,13 +1,74 @@
-import React from 'react';
-import { DetailedProps } from '../../types/types';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useContext } from 'react';
+import { config } from '../../helpers/const';
+import { MapContext } from '../../service/context/ContextProvider';
+import List from '../list/List';
+import { LabelsProps } from './types';
 
-type MapProps = DetailedProps<{}, HTMLDivElement>
+import style from './Labels.module.css';
+import { createModal } from '../map/createModal';
+import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
+import { delSpaces } from '../../helpers/utils';
 
-const Labels: React.FC<MapProps> = () => {
+const Labels: React.FC<LabelsProps> = (props) => {
+  const { className } = props;
+  const { markers, activeMarker, dispatch, storage } = useContext(MapContext);
+  const marker = markers.find(marker => marker.id === activeMarker);
+
+  const handleItemClick = useCallback(() => {
+
+  }, []);
+
+  const handleAddLabel = useCallback(async () => {
+    if (activeMarker && storage) {
+      await createModal()
+        .then(
+          (init) => {
+            let title = delSpaces(init!);
+            if (!title.length) title = config.vanillaLabelTitle;
+            const marker = storage.createLabel(activeMarker, title);
+            marker && dispatch(ACTIONS_CREATORS.addLabel(marker));
+          },
+          () => {
+            // !........
+          }
+        );
+    }
+  }, [activeMarker]);
+
+  const addLabelClass = `
+    material-icons
+    ${style.add_label}
+  `;
 
   return (
-    <div>
-      Labels
+    <div className={className} >
+      <div>
+        {
+          marker
+            ?
+            <>
+              <span
+                className={addLabelClass}
+                onClick={handleAddLabel}
+              >
+                control_point
+              </span>
+              <List
+                i_data={marker['labels']}
+                onItemClick={handleItemClick}
+                isMark={false}
+                activeMarker={activeMarker}
+                emptyText={config.list.label.empty}
+                storage={storage}
+              />
+            </>
+            :
+            <span className={style.no_select} >
+              {config.list.label.nothing}
+            </span>
+        }
+      </div>
     </div>
   );
 };

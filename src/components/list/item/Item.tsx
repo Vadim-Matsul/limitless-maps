@@ -1,17 +1,38 @@
 import { ItemProps } from './types';
 
 import style from './Item.module.css';
+import { Marker } from '../../../types/marker';
+
+let ClassName: string;
 
 const Item: React.FC<ItemProps> = (props) => {
-  const { title } = props;
+  const { bundle, onItemClick, onCheckClick, isMark, activeMarker } = props;
+
+  ClassName = `
+    ${style.item}
+    ${isMark && activeMarker === bundle.id ? style.item_check : ''}
+  `;
+
+  const handleCheckClick = () => {
+    const { location, id } = bundle as Marker;
+    onCheckClick && onCheckClick({ id, location });
+  };
 
   return (
-    <li className={style.item} >
-      <h3>{title}</h3>
+    <li
+      className={ClassName}
+      onClick={onItemClick}
+    >
+      <h3>{bundle.title}</h3>
       <div>
-        <span className={'material-icons'}>
-          check_circle
-        </span>
+        {isMark && activeMarker !== bundle.id &&
+          <span
+            className={'material-icons'}
+            onClick={handleCheckClick}
+          >
+            check_circle
+          </span>
+        }
         <span className='material-icons'>
           edit
         </span>
