@@ -9,7 +9,7 @@ export const ACTIONS_TYPE = {
 };
 
 export const ACTIONS_CREATORS = {
-  setActiveMarker: (payload: Marker) => ({ type: ACTIONS_TYPE.SET_ACTIVE_MARKER, payload }),
+  setActiveMarker: (payload: string) => ({ type: ACTIONS_TYPE.SET_ACTIVE_MARKER, payload }),
   createMarker: (payload: Marker) => ({ type: ACTIONS_TYPE.CREATE_MARKER, payload }),
   initializationMarkers: (payload: Markers) => ({ type: ACTIONS_TYPE.INITIALIZATION_MARKERS, payload }),
 };

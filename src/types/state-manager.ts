@@ -1,9 +1,9 @@
 import { Dispatch } from 'react';
 import { MarkersStorage } from '../helpers/sessionStorage';
 import { Actions } from '../service/store/actions/actions';
-import { Marker, Markers } from './marker';
+import { Markers } from './marker';
 
-type A_Marker = Marker | null;
+type A_Marker = string | null;
 
 export type DataSlice = {
   markers: Markers;

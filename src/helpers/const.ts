@@ -10,6 +10,7 @@ export const config = {
     successText: 'OK',
     rejectText: 'CANCEL',
   },
+  vanillaTitle: 'I am a marker!'
 };
 
 export const mapOptions: google.maps.MapOptions = {

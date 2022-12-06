@@ -8,7 +8,7 @@ import Shield from './shield/Shield';
 import { MapContext } from '../../service/context/ContextProvider';
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { InitMarkerData } from '../../types/marker';
-import { GMaps_LatLng, GMaps_Marker, GMaps_MouseEvent } from '../../types/types';
+import { GMaps_LatLng, GMaps_MapsEventListener, GMaps_Marker, GMaps_MouseEvent } from '../../types/types';
 import { createModal } from './createModal';
 
 
@@ -21,10 +21,13 @@ const Map: React.FC<MapProps> = (props) => {
   const { className } = props;
 
   const mapRef = useRef<MapRef>(null);
+  const listenerMapRef = useRef<GMaps_MapsEventListener[]>([]);
+
   const [mapReady, setMapReady] = useState<MapReady>(null);
   const [, setForce] = useState<number>(0);
-  const { markers, dispatch, storage } = useContext(MapContext);
+  const { markers, dispatch, storage, activeMarker } = useContext(MapContext);
 
+  console.log('ActiveMarke: ', activeMarker);
 
   const MARKERS = useMemo(() => {
     const MARKERS_arr: GMaps_Marker[] = [];
@@ -38,24 +41,49 @@ const Map: React.FC<MapProps> = (props) => {
         icon: { url: config.staticIconPath },
         title: marker.title,
       });
-      MARKERS_arr.push(point);
+      point.set('id', marker.id);
 
-      // google.maps.event.addListener(marker, 'click', () => {
-      // })
-      // marker.set('id', 102);
-      // console.log(marker.get('id'));
-      point.setMap(mapRef.current);
+      MARKERS_arr.push(point);
     });
 
     return MARKERS_arr;
   }, [markers]);
 
+
+  console.log(listenerMapRef.current.length);
+
+
+  const clearListeners = useCallback(() => {
+    listenerMapRef.current.forEach(listener => {
+      google.maps.event.removeListener(listener);
+    });
+    listenerMapRef.current = [];
+  }, []);
+
   useEffect(() => {
     if (mapRef.current) {
       const ins = mapRef.current;
-      MARKERS.forEach(marker => marker.setMap(ins));
+      const isNew = listenerMapRef.current.length !== MARKERS.length;
+      let listener: GMaps_MapsEventListener;
+
+      isNew && clearListeners();
+
+      MARKERS.forEach(marker => {
+
+        if (isNew) {
+          listener = marker.addListener('click', () => {
+            dispatch(ACTIONS_CREATORS.setActiveMarker(marker.get('id')));
+          });
+          listenerMapRef.current.push(listener);
+        }
+        marker.setMap(ins);
+      });
       setForce(prev => prev += 1);
     }
+
+    return () => {
+      listenerMapRef.current.length && clearListeners();
+    };
   }, [mapReady, MARKERS]);
 
 
@@ -84,7 +112,8 @@ const Map: React.FC<MapProps> = (props) => {
       await createModal()
         .then(
           (init) => {
-            const title = delSpaces(init!);
+            let title = delSpaces(init!);
+            if (!title.length) title = config.vanillaTitle;
             const data: InitMarkerData = { location: { lat, lng }, title };
             const marker = storage.createMarker(data);
             return dispatch(ACTIONS_CREATORS.createMarker(marker));

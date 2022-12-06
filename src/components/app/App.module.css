@@ -33,12 +33,18 @@
   border-radius: .2em;
 }
 
-.marked {
-  background: var(--white);
+.marks {
+  padding: .5em;
+  overflow: scroll;
+  overflow-x: hidden;
+
   border-radius: .5em;
+  background: var(--white);
 }
 
 .labels {
-  background: var(--white);
+  padding: .5em;
+
   border-radius: .5em;
+  background: var(--white);
 }

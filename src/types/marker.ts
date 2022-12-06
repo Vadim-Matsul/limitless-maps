@@ -4,15 +4,14 @@ export type Location = {
 };
 
 export type Label = {
-  name: string;
+  title: string;
+  id: string;
 };
 
 export type Marker = {
   location: Location;
   labels: Label[];
-  title: string;
-  id: string;
-};
+} & Label;
 
 export type Markers = Marker[];
 
