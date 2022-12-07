@@ -9,7 +9,7 @@ import style from './Labels.module.css';
 import { createModal } from '../map/createModal';
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { delSpaces } from '../../helpers/utils';
-import { EditHandler } from '../../types/types';
+import { DeleteHandler, EditHandler } from '../../types/types';
 
 const Labels: React.FC<LabelsProps> = (props) => {
   const { className } = props;
@@ -47,6 +47,12 @@ const Labels: React.FC<LabelsProps> = (props) => {
     response && dispatch(ACTIONS_CREATORS.editLabelTitle(response));
   }, []);
 
+  const handleDeleteLabel: DeleteHandler = useCallback((id, active) => {
+    const bundle = storage.deleteLabel(id, active!);
+    bundle && dispatch(ACTIONS_CREATORS.deleteLabel(bundle));
+  }, []);
+
+
   return (
     <div className={className} >
       <div>
@@ -68,6 +74,7 @@ const Labels: React.FC<LabelsProps> = (props) => {
                 emptyText={config.list.label.empty}
                 storage={storage}
                 onEdit={handleEditLabel}
+                onDelete={handleDeleteLabel}
                 map={map}
               />
             </>

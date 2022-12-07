@@ -27,6 +27,16 @@ export const dataReducer = (state: DataSlice, action: Actions): DataSlice => {
       state.markers[m_inx] = mrkr;
       return { markers: state.markers };
 
+    case AsT['DELETE_MARKER']:
+      const Markers = state.markers.filter(m => m.id !== action.payload);
+      return { markers: Markers };
+
+    case AsT['DELETE_LABEL']:
+      const [new_marker, index] = action.payload;
+      const new_markers = state.markers;
+      new_markers.splice(index, 1, new_marker);
+      return { markers: new_markers };
+
 
     default: return state;
 

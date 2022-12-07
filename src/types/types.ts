@@ -11,6 +11,7 @@ export type DetailedProps<
 
 export type EditData = { value: string, id: string, activeMarker: A_Marker };
 export type EditHandler = (bundle: EditData) => void;
+export type DeleteHandler = (id: string, activeMarker?: A_Marker) => void;
 
 
 export type GMaps_MouseEvent = google.maps.MapMouseEvent;

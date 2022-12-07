@@ -7,7 +7,7 @@ import style from './Marks.module.css';
 import List from '../list/List';
 import { config } from '../../helpers/const';
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
-import { EditHandler } from '../../types/types';
+import { DeleteHandler, EditHandler } from '../../types/types';
 
 const Marks: React.FC<MarksProps> = ({ className }) => {
   const { markers, activeMarker, dispatch, storage, map } = useContext(MapContext);
@@ -26,6 +26,11 @@ const Marks: React.FC<MarksProps> = ({ className }) => {
     response && dispatch(ACTIONS_CREATORS.editMarkerTitle(response));
   }, []);
 
+  const handleDeleteMarker: DeleteHandler = useCallback((id) => {
+    storage.deleteMarker(id);
+    dispatch(ACTIONS_CREATORS.deleteMarker(id));
+  }, []);
+
   return (
     <div className={ClassName}>
       <div>
@@ -36,6 +41,7 @@ const Marks: React.FC<MarksProps> = ({ className }) => {
           activeMarker={activeMarker}
           emptyText={config.list.marks.empty}
           onEdit={handleEditMarker}
+          onDelete={handleDeleteMarker}
           map={map}
         />
       </div>

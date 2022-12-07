@@ -67,13 +67,21 @@ export class MarkersStorage {
     }
   }
 
-  deleteMarker(marker: Marker): Markers {
-    const filtered = this.#markers.filter(m => m.id !== marker.id);
-    if (filtered.length !== this.#markers.length) {
-      this.#markers = filtered;
-      MarkersStorage.#setStorageMarkers(filtered);
+  deleteMarker(id: string): void {
+    const filtered = this.#markers.filter(m => m.id !== id);
+    this.#markers = filtered;
+    MarkersStorage.#setStorageMarkers(filtered);
+  };
+
+  deleteLabel(id: string, marker_id: string): MarkerCortege | undefined {
+    const [marker, index] = this.#find(this.#markers, marker_id);
+    if (marker && index !== undefined) {
+      const labels = marker['labels'].filter(label => label.id !== id);
+      marker['labels'] = labels;
+      this.#markers.splice(index, 1, marker);
+      MarkersStorage.#setStorageMarkers(this.#markers);
+      return [marker, index];
     }
-    return filtered;
   };
 
   #find<

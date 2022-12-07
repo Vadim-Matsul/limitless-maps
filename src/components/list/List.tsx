@@ -7,7 +7,8 @@ import style from './List.module.css';
 import Empty from './empty/Empty';
 
 const List: React.FC<ListProps> = (props) => {
-  const { storage, i_data, onItemClick, activeMarker, isMark = true, emptyText, onCheckClick, onEdit, map } = props;
+  const { storage, i_data, onItemClick,
+    activeMarker, isMark = true, emptyText, onCheckClick, onEdit, onDelete, map } = props;
 
 
   return (
@@ -25,6 +26,7 @@ const List: React.FC<ListProps> = (props) => {
                 activeMarker={activeMarker}
                 onCheckClick={onCheckClick}
                 onEdit={onEdit}
+                onDelete={onDelete}
                 map={map}
               />
             ))

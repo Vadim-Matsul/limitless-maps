@@ -11,10 +11,12 @@ const AT = {
   SET_MAP: narrow('SET_MAP'),
   EDIT_LABEL_TITLE: narrow('EDIT_LABEL_TITLE'),
   EDIT_MARKER_TITLE: narrow('EDIT_MARKER_TITLE'),
+  DELETE_MARKER: narrow('DELETE_MARKER'),
+  DELETE_LABEL: narrow('DELETE_LABEL'),
 };
 export const ACTIONS_TYPE = AT;
 
-export const ACTIONS_CREATORS = {
+const AC = {
   setActiveMarker: (payload: string) => ({ type: AT.SET_ACTIVE_MARKER, payload }),
   createMarker: (payload: Marker) => ({ type: AT.CREATE_MARKER, payload }),
   initializationMarkers: (payload: Markers) => ({ type: AT.INITIALIZATION_MARKERS, payload }),
@@ -22,13 +24,19 @@ export const ACTIONS_CREATORS = {
   setMap: (payload: GMaps_Map) => ({ type: AT.SET_MAP, payload }),
   editLabelTitle: (payload: EditLabelData) => ({ type: AT.EDIT_LABEL_TITLE, payload }),
   editMarkerTitle: (payload: EditMarkerData) => ({ type: AT.EDIT_MARKER_TITLE, payload }),
+  deleteMarker: (payload: string) => ({ type: AT.DELETE_MARKER, payload }),
+  deleteLabel: (payload: MarkerCortege) => ({ type: AT.DELETE_LABEL, payload }),
 };
+export const ACTIONS_CREATORS = AC;
 
 export type Actions =
-  | ReturnType<typeof ACTIONS_CREATORS['setActiveMarker']>
-  | ReturnType<typeof ACTIONS_CREATORS['createMarker']>
-  | ReturnType<typeof ACTIONS_CREATORS['initializationMarkers']>
-  | ReturnType<typeof ACTIONS_CREATORS['addLabel']>
-  | ReturnType<typeof ACTIONS_CREATORS['setMap']>
-  | ReturnType<typeof ACTIONS_CREATORS['editLabelTitle']>
-  | ReturnType<typeof ACTIONS_CREATORS['editMarkerTitle']>
+  | ReturnType<typeof AC['setActiveMarker']>
+  | ReturnType<typeof AC['createMarker']>
+  | ReturnType<typeof AC['initializationMarkers']>
+  | ReturnType<typeof AC['addLabel']>
+  | ReturnType<typeof AC['setMap']>
+  | ReturnType<typeof AC['editLabelTitle']>
+  | ReturnType<typeof AC['editMarkerTitle']>
+  | ReturnType<typeof AC['deleteMarker']>
+  | ReturnType<typeof AC['deleteLabel']>;
+

@@ -26,7 +26,7 @@ export const MapContext = createContext<Scope>({
 
 const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
-  const memo_markers = useMemo(() => state.data.markers, [state.data.markers]);
+  // const memo_markers = useMemo(() => state.data.markers, [state.data.markers]);
   // const memo_activeMarker = useMemo(() => state.logic.activeMarker, [state.logic.activeMarker]);
 
 

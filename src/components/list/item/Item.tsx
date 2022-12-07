@@ -10,7 +10,7 @@ let ClassName: string;
 let ClassNameInp: string;
 
 const Item: React.FC<ItemProps> = (props) => {
-  const { bundle, onItemClick, onCheckClick, onEdit, isMark, activeMarker, map } = props;
+  const { bundle, onItemClick, onCheckClick, onEdit, onDelete, isMark, activeMarker, map } = props;
   const titleRef = useRef<HTMLInputElement>(null);
   const editable = useRef<boolean>(false);
   const [titleState, setTitleState] = useState<string>(bundle.title);
@@ -72,6 +72,11 @@ const Item: React.FC<ItemProps> = (props) => {
     if (!editable.current) evt.target.blur();
   }, [bundle.title]);
 
+
+  const handleDeleteCLick = () => {
+    onDelete(bundle.id, activeMarker);
+  };
+
   return (
     <li
       className={ClassName}
@@ -115,7 +120,10 @@ const Item: React.FC<ItemProps> = (props) => {
         >
           edit
         </span>
-        <span className='material-icons'>
+        <span
+          className='material-icons'
+          onClick={handleDeleteCLick}
+        >
           delete
         </span>
       </div>
@@ -123,4 +131,4 @@ const Item: React.FC<ItemProps> = (props) => {
   );
 };
 
-export default React.memo(Item);
+export default Item;
