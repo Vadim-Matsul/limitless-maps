@@ -1,24 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useContext } from 'react';
+
+import type { CheckHandler, DeleteHandler, EditHandler } from '../../types/types';
+import type { MarksProps } from './types';
+
+import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { MapContext } from '../../service/context/ContextProvider';
-import { MarksProps } from './types';
+import config from '../../helpers/const';
+
+import Loader from '../loader/Loader';
+import Error from '../error';
+import List from '../list/List';
 
 import style from './Marks.module.css';
-import List from '../list/List';
-import { config } from '../../helpers/const';
-import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
-import { DeleteHandler, EditHandler } from '../../types/types';
+
 
 const Marks: React.FC<MarksProps> = ({ className }) => {
-  const { markers, activeMarker, dispatch, storage, map } = useContext(MapContext);
+  const { markers, activeMarker, dispatch, storage, isReady } = useContext(MapContext);
   const ClassName = `${className} ${style.marks}`;
 
-  const handleItemClick = useCallback(() => {
 
-  }, []);
-
-  const handleCheckClick = useCallback((value: string) => {
-    dispatch(ACTIONS_CREATORS.setActiveMarker(value));
+  const handleCheckClick: CheckHandler = useCallback(({ id, location }) => {
+    dispatch(ACTIONS_CREATORS.setMapCenter(location));
+    dispatch(ACTIONS_CREATORS.setActiveMarker(id));
   }, []);
 
   const handleEditMarker: EditHandler = useCallback(({ value, id }) => {
@@ -31,19 +35,24 @@ const Marks: React.FC<MarksProps> = ({ className }) => {
     dispatch(ACTIONS_CREATORS.deleteMarker(id));
   }, []);
 
+
   return (
     <div className={ClassName}>
       <div>
-        <List
-          i_data={markers}
-          onItemClick={handleItemClick}
-          onCheckClick={handleCheckClick}
-          activeMarker={activeMarker}
-          emptyText={config.list.marks.empty}
-          onEdit={handleEditMarker}
-          onDelete={handleDeleteMarker}
-          map={map}
-        />
+        {
+          isReady === null
+            ? <Loader isWhite={false} />
+            : isReady === true
+              ? <List
+                emptyText={config.list.marks.empty}
+                onCheckClick={handleCheckClick}
+                onDelete={handleDeleteMarker}
+                activeMarker={activeMarker}
+                onEdit={handleEditMarker}
+                i_data={markers}
+              />
+              : <Error />
+        }
       </div>
     </div>
   );

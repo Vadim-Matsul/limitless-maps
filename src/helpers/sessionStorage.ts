@@ -1,9 +1,16 @@
-import { EditLabelData, EditMarkerData, InitMarkerData, Label, Marker, MarkerCortege, Markers } from '../types/marker';
-import { A_Marker } from '../types/state-manager';
-import { EditData } from '../types/types';
+import type {
+  EditMarkerData,
+  InitMarkerData,
+  EditLabelData,
+  MarkerCortege,
+  Markers,
+  Marker,
+  Label
+} from '../types/marker';
+import type { A_Marker } from '../types/state-manager';
+import type { EditData } from '../types/types';
+
 import { narrowStringType } from './utils';
-
-
 
 
 export class MarkersStorage {
@@ -11,23 +18,18 @@ export class MarkersStorage {
   static #key = narrowStringType('MARKERS');
   #markers: Markers;
 
-
   constructor() {
     this.#markers = MarkersStorage.#getMarkers();
   };
-
 
   getMarkers(): Markers {
     return JSON.parse(JSON.stringify(this.#markers));
   };
 
-
   createMarker(data: InitMarkerData): Marker {
     const id = crypto.randomUUID();
     const marker: Marker = { ...data, labels: [], id };
-
     this.#markers.push(marker);
-
     MarkersStorage.#setStorageMarkers(this.#markers);
     return marker;
   };
@@ -95,13 +97,11 @@ export class MarkersStorage {
       }
       return false;
     });
-
     return [result, INDEX];
   }
 
   static #getMarkers(): Markers {
     const data = this.#parse(sessionStorage.getItem(this.#key));
-
     if (data === null) {
       this.#setStorageMarkers([]);
       return [];
@@ -109,16 +109,13 @@ export class MarkersStorage {
     return data;
   };
 
-
-  static #setStorageMarkers(v: Markers) {
-    sessionStorage.setItem(this.#key, JSON.stringify(v));
+  static #setStorageMarkers(value: Markers) {
+    sessionStorage.setItem(this.#key, JSON.stringify(value));
   };
-
 
   static #parse(str: string | null): Markers | null {
     return str
       ? JSON.parse(str)
       : null;
   };
-
 };

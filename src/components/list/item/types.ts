@@ -1,8 +1,9 @@
-import { Label, Marker } from '../../../types/marker';
-import { DetailedProps } from '../../../types/types';
-import { GeneralListProps } from '../types';
+import type { Label, Marker } from '../../../types/marker';
+import type { DetailedProps } from '../../../types/types';
+import type { GeneralListProps } from '../types';
 
-export type Props = GeneralListProps & {
+
+type Props = GeneralListProps & {
   bundle: Marker | Label;
 };
 

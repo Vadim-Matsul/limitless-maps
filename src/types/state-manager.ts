@@ -1,10 +1,12 @@
-import { Dispatch } from 'react';
-import { MapT } from '../components/map/types';
+import type { Actions } from '../service/store/actions/actions';
+import type { Location, Markers } from './marker';
+import type { Dispatch } from 'react';
+
 import { MarkersStorage } from '../helpers/sessionStorage';
-import { Actions } from '../service/store/actions/actions';
-import { Markers } from './marker';
+
 
 export type A_Marker = string | null;
+export type Ready = boolean | null;
 
 export type DataSlice = {
   markers: Markers;
@@ -12,7 +14,8 @@ export type DataSlice = {
 
 export type LogicSlice = {
   activeMarker: A_Marker;
-  map: MapT;
+  center: Location;
+  isReady: Ready;
 };
 
 export type RootState = {
@@ -21,9 +24,10 @@ export type RootState = {
 };
 
 export type Scope = {
-  markers: Markers;
-  activeMarker: A_Marker;
-  storage: MarkersStorage;
-  map: MapT;
   dispatch: Dispatch<Actions>;
+  storage: MarkersStorage;
+  activeMarker: A_Marker;
+  markers: Markers;
+  center: Location;
+  isReady: Ready;
 };

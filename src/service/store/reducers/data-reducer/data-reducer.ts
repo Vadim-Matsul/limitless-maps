@@ -1,5 +1,7 @@
-import { DataSlice } from '../../../../types/state-manager';
+import type { DataSlice } from '../../../../types/state-manager';
+
 import { Actions, ACTIONS_TYPE as AsT } from '../../actions/actions';
+
 
 export const dataReducer = (state: DataSlice, action: Actions): DataSlice => {
 
@@ -36,7 +38,6 @@ export const dataReducer = (state: DataSlice, action: Actions): DataSlice => {
       const new_markers = state.markers;
       new_markers.splice(index, 1, new_marker);
       return { markers: new_markers };
-
 
     default: return state;
 

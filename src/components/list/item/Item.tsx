@@ -1,20 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ItemProps } from './types';
+import React, {
+  useCallback,
+  useReducer,
+  useState,
+  useRef
+} from 'react';
+
+import type { ChangeEvent, FocusEvent } from 'react';
+import type { Marker } from '../../../types/marker';
+import type { ItemProps } from './types';
+
+import { delSpaces } from '../../../helpers/utils';
 
 import style from './Item.module.css';
-import { Marker } from '../../../types/marker';
-import React, { ChangeEvent, FocusEvent, useCallback, useReducer, useRef, useState } from 'react';
-import { delSpaces } from '../../../helpers/utils';
+
 
 let ClassName: string;
 let ClassNameInp: string;
 
+
 const Item: React.FC<ItemProps> = (props) => {
-  const { bundle, onItemClick, onCheckClick, onEdit, onDelete, isMark, activeMarker, map } = props;
-  const titleRef = useRef<HTMLInputElement>(null);
-  const editable = useRef<boolean>(false);
+  const { bundle, onCheckClick, onEdit, onDelete, isMark, activeMarker } = props;
   const [titleState, setTitleState] = useState<string>(bundle.title);
   const [, forceUpdate] = useReducer(n => n + 1, 0);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const editable = useRef<boolean>(false);
 
   ClassName = `
     ${style.item}
@@ -26,11 +36,12 @@ const Item: React.FC<ItemProps> = (props) => {
    ${editable.current ? style.title_active : ''}
   `;
 
+
   const handleCheckClick = () => {
     const { location, id } = bundle as Marker;
-    map?.setCenter(location);
-    onCheckClick && onCheckClick(id);
+    onCheckClick && onCheckClick({ id, location });
   };
+
 
   const handleEditClick = useCallback(
     () => {
@@ -42,10 +53,12 @@ const Item: React.FC<ItemProps> = (props) => {
       input.selectionEnd = titleState.length;
     }, [titleState]);
 
+
   const handleTitleChange = useCallback(
     (evt: ChangeEvent<HTMLInputElement>) => {
       editable.current && setTitleState(evt.target.value);
     }, [bundle.title]);
+
 
   const handleSaveTitle = useCallback(
     () => {
@@ -54,9 +67,9 @@ const Item: React.FC<ItemProps> = (props) => {
       update !== bundle.title && update.length
         ? onEdit({ value: update, id: bundle.id, activeMarker })
         : setTitleState(bundle.title);
-
       forceUpdate();
     }, [titleState, onEdit]);
+
 
   const handleLoseFocus = useCallback(
     (evt: FocusEvent<HTMLInputElement>) => {
@@ -68,6 +81,7 @@ const Item: React.FC<ItemProps> = (props) => {
       }
     }, [bundle.title]);
 
+
   const handleFocus = useCallback((evt: FocusEvent<HTMLInputElement>) => {
     if (!editable.current) evt.target.blur();
   }, [bundle.title]);
@@ -77,11 +91,9 @@ const Item: React.FC<ItemProps> = (props) => {
     onDelete(bundle.id, activeMarker);
   };
 
+
   return (
-    <li
-      className={ClassName}
-      onClick={onItemClick}
-    >
+    <li className={ClassName}>
       <div className={style.title_wrap} >
         {
           editable.current &&
@@ -93,20 +105,19 @@ const Item: React.FC<ItemProps> = (props) => {
           </span>
         }
         <input
-          className={ClassNameInp}
-          value={titleState}
-          contentEditable={false}
-          suppressContentEditableWarning
-          type='text'
-          maxLength={15}
-          onChange={handleTitleChange}
           onBlur={evt => setTimeout(handleLoseFocus, 130, evt)}
+          onChange={handleTitleChange}
+          className={ClassNameInp}
           onFocus={handleFocus}
+          value={titleState}
+          maxLength={15}
           ref={titleRef}
+          type='text'
         />
       </div>
       <div>
-        {isMark && activeMarker !== bundle.id &&
+        {
+          isMark && activeMarker !== bundle.id &&
           <span
             className={'material-icons'}
             onClick={handleCheckClick}

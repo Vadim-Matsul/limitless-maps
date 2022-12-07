@@ -1,17 +1,14 @@
 import React from 'react';
 
-// import style from './Error.module.css';
-import '../../index.css';
+import config from '../../helpers/const';
+
+import style from './Error.module.css';
 
 
-
-const Error: React.FC = () => {
-
-  return (
-    <div>
-      <span>Something went wrong...</span>
-    </div>
-  );
-};
+const Error: React.FC = () => (
+  <div className={style.error}>
+    <span>{config.errorText}</span>
+  </div>
+);
 
 export default Error;

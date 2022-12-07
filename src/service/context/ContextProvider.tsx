@@ -1,34 +1,46 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createContext, useEffect, useMemo, useReducer } from 'react';
+import { createContext, useEffect, useReducer } from 'react';
+import { useJsApiLoader } from '@react-google-maps/api';
+
+import type { RootState, Scope } from '../../types/state-manager';
+import type { Markers } from '../../types/marker';
 import type { PropsWithChildren } from 'react';
-import { mainReducer } from '../store/reducers/main-reducer';
+
 import { MarkersStorage } from '../../helpers/sessionStorage';
-import { RootState, Scope } from '../../types/state-manager';
-import { Markers } from '../../types/marker';
+import { mainReducer } from '../store/reducers/main-reducer';
 import { ACTIONS_CREATORS } from '../store/actions/actions';
+import { mapInitialData } from '../../helpers/const';
+
+import Loader from '../../components/loader';
 
 
-export const storage = new MarkersStorage();
+const MAP_KEY = process.env.REACT_APP_MAP_KEY;
+
+const center = mapInitialData.center;
+const storage = new MarkersStorage();
 const markers: Markers = [];
 const activeMarker = null;
-const map = null;
+const isReady = null;
 
-const initialState: RootState = { logic: { activeMarker, map }, data: { markers, }, };
+const initialState: RootState = { logic: { activeMarker, center, isReady }, data: { markers, }, };
 
 export const MapContext = createContext<Scope>({
+  center,
   storage,
   markers,
+  isReady,
   activeMarker,
   dispatch: () => null,
-  map
 });
 
 
 const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
-  // const memo_markers = useMemo(() => state.data.markers, [state.data.markers]);
-  // const memo_activeMarker = useMemo(() => state.logic.activeMarker, [state.logic.activeMarker]);
 
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: MAP_KEY!,
+  });
 
   useEffect(() => {
     const init_markers = storage.getMarkers();
@@ -39,13 +51,18 @@ const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <MapContext.Provider
       value={{
         activeMarker: state.logic.activeMarker,
+        isReady: state.logic.isReady,
         markers: state.data.markers,
+        center: state.logic.center,
         dispatch,
         storage,
-        map: state.logic.map
       }}
     >
-      {children}
+      {
+        isLoaded
+          ? children
+          : <Loader />
+      }
     </MapContext.Provider>
   );
 };

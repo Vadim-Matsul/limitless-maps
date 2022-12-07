@@ -1,3 +1,2 @@
-import { DetailedProps } from '../../types/types';
-
+import type { DetailedProps } from '../../types/types';
 export type MarksProps = DetailedProps<{}>;

@@ -1,24 +1,31 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useContext } from 'react';
-import { config } from '../../helpers/const';
+
+import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { MapContext } from '../../service/context/ContextProvider';
-import List from '../list/List';
-import { LabelsProps } from './types';
+import { createModal } from '../map/createModal';
+import { delSpaces } from '../../helpers/utils';
+import config from '../../helpers/const';
+
+import type { DeleteHandler, EditHandler } from '../../types/types';
+import type { LabelsProps } from './types';
+
+import Loader from '../loader';
+import Error from '../error';
+import List from '../list';
 
 import style from './Labels.module.css';
-import { createModal } from '../map/createModal';
-import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
-import { delSpaces } from '../../helpers/utils';
-import { DeleteHandler, EditHandler } from '../../types/types';
+
 
 const Labels: React.FC<LabelsProps> = (props) => {
-  const { className } = props;
-  const { markers, activeMarker, dispatch, storage, map } = useContext(MapContext);
+  const { markers, activeMarker, dispatch, storage, isReady } = useContext(MapContext);
   const marker = markers.find(marker => marker.id === activeMarker);
+  const { className } = props;
 
-  const handleItemClick = useCallback(() => {
-
-  }, []);
+  const addLabelClass = `
+    material-icons
+    ${style.add_label}
+  `;
 
   const handleAddLabel = useCallback(async () => {
     if (activeMarker && storage) {
@@ -37,11 +44,6 @@ const Labels: React.FC<LabelsProps> = (props) => {
     }
   }, [activeMarker]);
 
-  const addLabelClass = `
-    material-icons
-    ${style.add_label}
-  `;
-
   const handleEditLabel: EditHandler = useCallback((bundle) => {
     const response = storage.editLabelTitle(bundle);
     response && dispatch(ACTIONS_CREATORS.editLabelTitle(response));
@@ -55,35 +57,39 @@ const Labels: React.FC<LabelsProps> = (props) => {
 
   return (
     <div className={className} >
-      <div>
-        {
-          marker
-            ?
-            <>
-              <span
-                className={addLabelClass}
-                onClick={handleAddLabel}
-              >
-                control_point
-              </span>
-              <List
-                i_data={marker['labels']}
-                onItemClick={handleItemClick}
-                isMark={false}
-                activeMarker={activeMarker}
-                emptyText={config.list.label.empty}
-                storage={storage}
-                onEdit={handleEditLabel}
-                onDelete={handleDeleteLabel}
-                map={map}
-              />
-            </>
-            :
-            <span className={style.no_select} >
-              {config.list.label.nothing}
-            </span>
-        }
-      </div>
+      {
+        isReady === null
+          ? <Loader isWhite={false} />
+          : isReady === true
+            ? <div>
+              {
+                marker
+                  ?
+                  <>
+                    <span
+                      className={addLabelClass}
+                      onClick={handleAddLabel}
+                    >
+                      control_point
+                    </span>
+                    <List
+                      emptyText={config.list.label.empty}
+                      onDelete={handleDeleteLabel}
+                      activeMarker={activeMarker}
+                      i_data={marker['labels']}
+                      onEdit={handleEditLabel}
+                      storage={storage}
+                      isMark={false}
+                    />
+                  </>
+                  :
+                  <span className={style.no_select} >
+                    {config.list.label.nothing}
+                  </span>
+              }
+            </div>
+            : <Error />
+      }
     </div>
   );
 };

@@ -19,11 +19,11 @@
   background: var(--black);
   z-index: 100;
   
-  transition: all 1.5s ease-in-out;
+  transition: all 3s linear;
 }
 
 .shield_end {
-  top: -100vh;
+  top: -150vh;
 }
 
 .reload {

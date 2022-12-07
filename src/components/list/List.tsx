@@ -1,45 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ListProps } from './types';
-import Item from './item/Item';
+import type { ListProps } from './types';
 
+import Empty from './empty';
+import Item from './item';
 
 import style from './List.module.css';
-import Empty from './empty/Empty';
-
-const List: React.FC<ListProps> = (props) => {
-  const { storage, i_data, onItemClick,
-    activeMarker, isMark = true, emptyText, onCheckClick, onEdit, onDelete, map } = props;
 
 
-  return (
-    <div className={!isMark ? style.list__wrap : ''}>
-      <ul className={style.list}>
-        {
-          i_data.length
-            ?
-            i_data.map(bundle => (
-              <Item
-                key={bundle.id}
-                bundle={bundle}
-                onItemClick={onItemClick}
-                isMark={isMark}
-                activeMarker={activeMarker}
-                onCheckClick={onCheckClick}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                map={map}
-              />
-            ))
-            :
-            <Empty
+const List: React.FC<ListProps> = ({
+  i_data, activeMarker, isMark = true, emptyText,
+  onCheckClick, onDelete, onEdit,
+}) => (
+
+  <div className={!isMark ? style.list__wrap : ''}>
+    <ul className={style.list}>
+      {
+        i_data.length
+          ?
+          i_data.map(bundle =>
+            <Item
+              activeMarker={activeMarker}
+              onCheckClick={onCheckClick}
+              onDelete={onDelete}
+              bundle={bundle}
               isMark={isMark}
-              emptyText={emptyText}
+              onEdit={onEdit}
+              key={bundle.id}
             />
-        }
-      </ul>
-    </div>
-  );
-};
+          )
+          :
+          <Empty
+            emptyText={emptyText}
+          />
+      }
+    </ul>
+  </div>
+
+);
 
 export default List;
-

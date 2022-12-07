@@ -1,22 +1,21 @@
 import { MarkersStorage } from '../../helpers/sessionStorage';
-import { Label, Markers } from '../../types/marker';
-import { A_Marker } from '../../types/state-manager';
-import { DeleteHandler, EditHandler } from '../../types/types';
-import { MapT } from '../map/types';
+
+import type { CheckHandler, DeleteHandler, EditHandler } from '../../types/types';
+import type { A_Marker } from '../../types/state-manager';
+import type { Label, Markers } from '../../types/marker';
 
 
 export type GeneralListProps = {
-  onItemClick: () => void;
-  onCheckClick?: (value: string) => void;
-  onEdit: EditHandler;
+  onCheckClick?: CheckHandler;
   onDelete: DeleteHandler;
+  onEdit: EditHandler;
+
   activeMarker: A_Marker;
   isMark?: boolean;
-  map: MapT
 };
 
 export type ListProps = GeneralListProps & {
   i_data: Markers | Label[];
-  emptyText: string;
   storage?: MarkersStorage;
+  emptyText: string;
 };

@@ -1,4 +1,5 @@
-import { config } from '../../helpers/const';
+import config from '../../helpers/const';
+
 
 export const createModal = (): Promise<string | void> =>
   new Promise((res, rej) => {
