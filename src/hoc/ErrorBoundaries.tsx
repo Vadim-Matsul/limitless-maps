@@ -1,4 +1,5 @@
 import { PureComponent, ReactNode } from 'react';
+
 import Error from '../components/error';
 
 type Props = Readonly<Record<'children', ReactNode>>;
@@ -11,10 +12,17 @@ class ErrorBoundaries extends PureComponent<Props, State> {
     return { Error: true };
   };
 
+
   render(): ReactNode {
+
     return this.state.Error
-      ? <Error />
-      : this.props.children;
+      ?
+      <div className='boundary' >
+        <Error />
+      </div>
+      :
+      this.props.children;
+
   };
 }
 

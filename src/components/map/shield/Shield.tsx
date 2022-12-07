@@ -1,9 +1,11 @@
-import { config } from '../../../helpers/const';
-import styles from './Shield.module.css';
-import { ShieldProps } from './types';
+import type { ShieldProps } from './types';
 
-const Shield: React.FC<ShieldProps> = (props) => {
-  const { text, mapReady, ...rest } = props;
+import config from '../../../helpers/const';
+
+import styles from './Shield.module.css';
+
+
+const Shield: React.FC<ShieldProps> = ({ text, mapReady }) => {
   const _class = `${styles.shield} ${mapReady ? styles.shield_end : ''}`;
   const isError = text === config.sww;
 
@@ -12,7 +14,6 @@ const Shield: React.FC<ShieldProps> = (props) => {
   return (
     <div
       className={_class}
-      {...rest}
     >
       <span>{text}</span>
       {isError &&

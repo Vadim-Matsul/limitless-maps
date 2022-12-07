@@ -1,44 +1,14 @@
-.app {
-  display: grid;
-  grid-template:
-    ". . ." 0
-    ". map ." minmax(200px, calc(50vh - (2 * 1rem)))
-    ". data ." minmax(200px, calc(50vh - 1rem))
-    ". . ." 0 / auto minmax(600px, 1200px) auto;
-  gap: 1rem;
-}
+.error {
+  display: inline-block;
 
-.map {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-  grid-area: map;
-  border-radius: .5em;
-  padding: .3em;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: var(--font-family);
 
-  overflow: hidden;
-  background: var(--white);
-}
-
-.data {
-  grid-area: data;
-  
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(2, minmax(calc(100px - .25rem), calc(25vh - .75rem)));
-  gap: .5rem;
-
-  padding-left: 1.5rem;
-
-  border-left: 3px solid var(--white);
-  border-radius: .2em;
-}
-
-.marked {
-  background: var(--white);
-  border-radius: .5em;
-}
-
-.labels {
-  background: var(--white);
-  border-radius: .5em;
-}
+  color: var(--red);
+}  

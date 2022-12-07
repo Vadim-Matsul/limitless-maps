@@ -8,9 +8,12 @@
 
 :root {
   --purple: #3b5998;
+  --purple-tr: #3b5898b0;
   --green-lite: #898F9C;
   --white: #f2f3f4;
   --black: #3B434E;
+  --green: rgb(89, 183, 89);
+  --red: rgb(181, 61, 61);
   --font-family: 'Roboto', sans-serif;
 }
 
@@ -32,3 +35,95 @@ html, body {
   background: var(--green-lite);
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  min-width: 400px;
+  min-height: 400px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--purple-tr);
+}
+
+.modal > div {
+  position: relative;
+
+  min-width: 250px;
+  width: 30vw;
+
+  min-height: 120px;
+  height: 20vh;
+
+  padding: 1em;
+  border-radius: .5em;
+
+  background: var(--white);
+}
+
+.modal > div > input {
+  font-family: var(--font-family);
+  padding: .5em;
+  width: 100%;
+
+  outline: none;
+  border: 2px solid var(--purple-tr);
+  border-radius: .5em;
+}
+
+.modal > div > input::placeholder {
+  text-transform: uppercase;
+}
+
+.modal > div > input:focus {
+  border: 2px solid var(--purple);
+}
+
+
+.modal > div > div {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  right: 1em;
+}
+
+.modal > div > div > button {
+  cursor: pointer;
+  font-family: var(--font-family);
+
+  padding: .3em;
+  width: 40%;
+
+  outline: none;
+  border: 2px solid var(--purple-tr);
+  border-radius: .5em;
+
+  font-weight: 600;
+  color: var(--white);
+}
+
+.modal > div > div > button:hover {
+  border: 2px solid var(--purple);
+}
+
+.modal > div > div > button:nth-child(1) {
+  background: var(--green);
+  float: left;
+}
+.modal > div > div > button:nth-child(2) {
+  background: var(--red);
+  float: right;
+}
+
+.boundary {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+}

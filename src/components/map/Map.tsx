@@ -1,55 +1,40 @@
-import React, { useCallback, useRef, useState } from 'react';
 import { GoogleMap } from '@react-google-maps/api';
-import { LoadCB, MapProps, MapReady, MapRef } from './types';
-import { checkMapButtonError } from '../../helpers/utils';
-import { config } from '../../helpers/const';
+
+import type { MapProps } from './types';
+
+import { mapInitialData, mapOptions } from '../../helpers/const';
+import useMapLogic from './useMapLogic';
+
 import Shield from './shield/Shield';
 
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
 
-let shieldText: string = config.mapInitProcess;
+const Map: React.FC<MapProps> = ({ className }) => {
 
-
-const Map: React.FC<MapProps> = (props) => {
-  const { className } = props;
-  const mapRef = useRef<MapRef>(null);
-  const [mapReady, setMapReady] = useState<MapReady>(null);
-
-  const handleLoad = useCallback<LoadCB>(async map => {
-    await checkMapButtonError(config.dismissClassButton, 100)
-      .then(
-        res => setMapReady(res),
-        rej => {
-          setMapReady(rej);
-          shieldText = config.sww;
-        });
-
-    mapRef.current = map;
-  }, []);
-
-  const handleUnmount = useCallback<LoadCB>(() => mapRef.current = null, []);
-
+  const {
+    isReady,
+    shieldText,
+    handleLoad,
+    handleUnmount,
+    handleMapClick,
+  } = useMapLogic();
 
   return (
     <section className={className}>
       <>
         <Shield
+          mapReady={isReady}
           text={shieldText}
-          mapReady={mapReady}
         />
         <GoogleMap
-          mapContainerStyle={{
-            width: '100%',
-            height: '100%'
-          }}
-          center={center}
-          zoom={10}
-          onLoad={handleLoad}
+          mapContainerStyle={mapInitialData.style}
+          center={mapInitialData.center}
           onUnmount={handleUnmount}
-        />
+          onClick={handleMapClick}
+          options={mapOptions}
+          onLoad={handleLoad}
+          zoom={10}
+        >
+        </GoogleMap>
       </>
     </section>
   );

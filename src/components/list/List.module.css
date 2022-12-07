@@ -1,0 +1,14 @@
+.list {
+  list-style-type: none;
+}
+
+.list__wrap {
+  width: 100%;
+  min-height: 70px;
+  height: 18vh;
+
+  padding-right: .5rem;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
