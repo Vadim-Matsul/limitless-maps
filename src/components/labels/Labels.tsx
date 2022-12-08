@@ -4,7 +4,7 @@ import React, { useCallback, useContext } from 'react';
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { MapContext } from '../../service/context/ContextProvider';
 import { createModal } from '../map/createModal';
-import { delSpaces } from '../../helpers/utils';
+import { delSpaces } from '../../helpers/utils/utils';
 import config from '../../helpers/const';
 
 import type { DeleteHandler, EditHandler } from '../../types/types';

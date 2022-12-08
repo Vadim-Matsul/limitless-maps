@@ -6,7 +6,7 @@ import type { RootState, Scope } from '../../types/state-manager';
 import type { Markers } from '../../types/marker';
 import type { PropsWithChildren } from 'react';
 
-import { MarkersStorage } from '../../helpers/sessionStorage';
+import MarkerData from '../../helpers/storage/sessionStorage';
 import { mainReducer } from '../store/reducers/main-reducer';
 import { ACTIONS_CREATORS } from '../store/actions/actions';
 import { mapInitialData } from '../../helpers/const';
@@ -17,7 +17,7 @@ import Loader from '../../components/loader';
 const MAP_KEY = process.env.REACT_APP_MAP_KEY;
 
 const center = mapInitialData.center;
-const storage = new MarkersStorage();
+const storage = new MarkerData();
 const markers: Markers = [];
 const activeMarker = null;
 const isReady = null;

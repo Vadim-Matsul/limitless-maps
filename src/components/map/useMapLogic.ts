@@ -13,7 +13,7 @@ import {
 import type { GMaps_LatLng, GMaps_MapsEventListener, GMaps_Marker, MapDataHook } from '../../types/types';
 import type { LoadCB, MapClickCB, MapT } from './types';
 
-import { checkMapButtonError, delSpaces } from '../../helpers/utils';
+import { checkMapButtonError, delSpaces } from '../../helpers/utils/utils';
 import config from '../../helpers/const';
 
 import { MapContext } from '../../service/context/ContextProvider';

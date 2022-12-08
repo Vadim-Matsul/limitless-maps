@@ -1,4 +1,4 @@
-import { MarkersStorage } from '../../helpers/sessionStorage';
+import MarkerData from '../../helpers/storage/sessionStorage';
 
 import type { CheckHandler, DeleteHandler, EditHandler } from '../../types/types';
 import type { A_Marker } from '../../types/state-manager';
@@ -16,6 +16,6 @@ export type GeneralListProps = {
 
 export type ListProps = GeneralListProps & {
   i_data: Markers | Label[];
-  storage?: MarkersStorage;
+  storage?: MarkerData;
   emptyText: string;
 };

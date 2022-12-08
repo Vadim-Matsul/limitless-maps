@@ -10,7 +10,7 @@ import type { ChangeEvent, FocusEvent } from 'react';
 import type { Marker } from '../../../types/marker';
 import type { ItemProps } from './types';
 
-import { delSpaces } from '../../../helpers/utils';
+import { delSpaces } from '../../../helpers/utils/utils';
 
 import style from './Item.module.css';
 
