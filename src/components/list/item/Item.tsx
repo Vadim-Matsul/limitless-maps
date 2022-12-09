@@ -26,15 +26,8 @@ const Item: React.FC<ItemProps> = (props) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const editable = useRef<boolean>(false);
 
-  ClassName = `
-    ${style.item}
-    ${isMark && activeMarker === bundle.id ? style.item_check : ''}
-  `;
-
-  ClassNameInp = `
-   ${style.title}
-   ${editable.current ? style.title_active : ''}
-  `;
+  ClassName = `${style.item} ${isMark && activeMarker === bundle.id ? style.item_check : ''}`;
+  ClassNameInp = `${style.title} ${editable.current ? style.title_active : ''}`;
 
 
   const handleCheckClick = () => {
@@ -112,6 +105,7 @@ const Item: React.FC<ItemProps> = (props) => {
           value={titleState}
           maxLength={15}
           ref={titleRef}
+          data-testid='title'
           type='text'
         />
       </div>

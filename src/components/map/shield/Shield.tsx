@@ -14,6 +14,7 @@ const Shield: React.FC<ShieldProps> = ({ text, mapReady }) => {
   return (
     <div
       className={_class}
+      data-testid='shield'
     >
       <span>{text}</span>
       {isError &&

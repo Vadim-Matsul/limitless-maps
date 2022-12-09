@@ -1,45 +1,77 @@
-// import testBundle from '../../z_test';
+import testBundle from '../../z_test';
 
-// const {
-//   MarkerData,
-//   creators: { createInitMarkerData }
-// } = testBundle;
+const {
+  MarkerData,
+  data: { title, labelId, markerId },
+  creators: { createInitMarkerData, createMarker },
+} = testBundle;
 
-// describe('sessionStorage', () => {
-//   const instance = new MarkerData();
-//   const id = 'some_test_id';
-//   window.crypto = { ...window.crypto, randomUUID: () => id };
 
-//   it('корректаня работа getMarkers', () => {
-//     const spyParse = jest.spyOn(JSON, 'parse');
-//     const spyStringify = jest.spyOn(JSON, 'stringify');
+const markers = [createMarker()];
 
-//     const res = instance.getMarkers();
+window.crypto = {
+  ...window.crypto,
+  randomUUID: () => 'test',
+};
+globalThis.Storage.prototype.getItem = jest.fn(() => JSON.stringify(markers));
 
-//     expect(Array.isArray(res)).toBeTruthy();
-//     expect(spyParse).toBeCalledTimes(1);
-//     expect(spyStringify).toBeCalledTimes(1);
-//   });
 
-//   it('корректаня работа createMarker', () => {
-//     const data = createInitMarkerData();
-//     const spyArray = jest.spyOn(Array.prototype, 'push');
+describe('sessionStorage', () => {
+  const instance = new MarkerData();
 
-//     const resualt = instance.createMarker(data);
-//     expect(resualt).toEqual({ ...data, labels: [], id });
-//     expect(spyArray).toBeCalled();
-//   });
+  it('корректаня работа getAll', () => {
+    const resualt = instance.getAll();
+    expect(resualt).toEqual(markers);
+  });
 
-//   it('корректаня работа createLabel', () => {
-//     // jest.spyOn(MarkersStorage.prototype, '')
-//     const data = createInitMarkerData();
-//     const spyArray = jest.spyOn(Array.prototype, 'push');
+  it('корректаня работа updateLabelTitle', () => {
+    let new_title;
+    let resualt;
 
-//     const resualt = instance.createMarker(data);
-//     expect(resualt).toEqual({ ...data, labels: [], id });
-//     expect(spyArray).toBeCalled();
-//   });
+    new_title = 'new_title';
+    resualt = instance.updateLabelTitle(new_title, markerId, labelId)!;
+    expect(resualt['label']['title']).not.toBe(title);
+  });
 
-// });
+  it('корректаня работа removeLabel', () => {
+    const [marker] = instance.removeLabel(markerId, labelId)!;
+    expect(marker['labels'].length).toBe(0);
+  });
 
-export { };
+  it('корректаня работа createLabel', () => {
+    const [marker] = instance.createLabel(markerId, title)!;
+    expect(marker['labels'].length).toBe(1);
+    expect(marker['labels'][0].title).toBe(title);
+  });
+
+  it('корректаня работа updateMarkerTitle', () => {
+    const new_title = 'new_title';
+    const { marker } = instance.updateMarkerTitle(new_title, markerId)!;
+    expect(marker.title).not.toBe(title);
+  });
+
+  it('корректаня работа removeMarker', () => {
+    let all;
+    all = instance.getAll();
+
+    expect(all.length).toBeGreaterThan(0);
+    instance.removeMarker(markerId)!;
+
+    all = instance.getAll();
+    expect(all).toStrictEqual([]);
+  });
+
+  it('корректаня работа createMarker', () => {
+    let all;
+    all = instance.getAll();
+
+    expect(all.length).toBe(0);
+    const initData = createInitMarkerData();
+    instance.createMarker(initData);
+
+    all = instance.getAll();
+    expect(all.length).toBeGreaterThan(0);
+  });
+
+
+});

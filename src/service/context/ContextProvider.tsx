@@ -6,13 +6,12 @@ import type { RootState, Scope } from '../../types/state-manager';
 import type { Markers } from '../../types/marker';
 import type { PropsWithChildren } from 'react';
 
-import MarkerData, { LabelC } from '../../helpers/storage/sessionStorage';
+import MarkerData from '../../helpers/storage/sessionStorage';
 import { mainReducer } from '../store/reducers/main-reducer';
 import { ACTIONS_CREATORS } from '../store/actions/actions';
 import { mapInitialData } from '../../helpers/const';
 
 import Loader from '../../components/loader';
-import MarkerStorage from '../../helpers/storage/sessionStorage';
 
 
 const MAP_KEY = process.env.REACT_APP_MAP_KEY;
@@ -34,7 +33,6 @@ export const MapContext = createContext<Scope>({
   activeMarker,
   dispatch: () => null,
 });
-
 
 
 const ContextProvider: React.FC<PropsWithChildren> = ({ children }) => {

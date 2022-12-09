@@ -1,35 +1,24 @@
-/* eslint-disable prefer-const */
 import type {
-  //   EditMarkerData,
+  EditMarkerData,
   InitMarkerData,
-  Label,
-  //   EditLabelData,
-  //   MarkerCortege,
-  //   Markers,
-  Marker,
-  //   Label,
-  Location,
   EditLabelData,
   MarkerCortege,
-  EditMarkerData,
+  Marker,
+  Label,
+  Location,
 } from '../../types/marker';
-// import type { A_Marker } from '../../types/state-manager';
-// import type { EditData } from '../../types/types';
+import { Replace } from '../../types/types';
 
 
 
-// /////////////////////////////////////////////////
-
-interface ILabelC {
-  id: string;
-  title: string;
+interface ILabelC extends Label {
   editTitle(title: string): void;
   read(): Label;
 };
 
-export class LabelC implements ILabelC {
-  public title: string;
+class LabelC implements ILabelC {
   public readonly id: string;
+  public title: string;
 
   constructor(bundle: string | ILabelC) {
     if (typeof bundle === 'string') {
@@ -39,35 +28,27 @@ export class LabelC implements ILabelC {
       this.id = bundle.id;
       this.title = bundle.title;
     }
-  }
+  };
 
   public read(): Label {
     return { id: this.id, title: this.title, };
-  }
+  };
 
   public editTitle(title: string): void {
     this.title = title;
-  }
+  };
 
-}
+};
 
-// /////////////////////////////////////////////////
-type TMarker = {
-  location: Location;
-  labels: LabelC[];
-  id: string;
-  title: string;
-}
 
-interface IMarkerC {
-  location: Location;
-  labels: LabelC[];
-  id: string;
-  title: string;
-  editTitle(title: string): void;
+type TMarker = Replace<Marker, 'labels', LabelC[]>
+
+interface IMarkerC extends TMarker {
   editLabelTitle(id: string, title: string): void;
+  editTitle(title: string): void;
   addLabel(title: string): void;
   deleteLabel(id: string): void;
+  read(): Marker;
 };
 
 class MarkerC implements IMarkerC {
@@ -93,19 +74,6 @@ class MarkerC implements IMarkerC {
     }
   };
 
-
-
-  private initializeLabels(labels: ILabelC[]): ILabelC[] {
-    if (!labels.length) return [];
-
-    const update_labels = [];
-    for (let label of labels) {
-      const update_label = new LabelC(label);
-      update_labels.push(update_label);
-    }
-    return update_labels;
-  }
-
   public editTitle(title: string) {
     this.title = title;
   };
@@ -129,7 +97,7 @@ class MarkerC implements IMarkerC {
       (label) => label.id !== id
     );
     this.labels = labels;
-  }
+  };
 
   public editLabelTitle(id: string, title: string): [number, Label] | undefined {
     let INDEX: number;
@@ -147,12 +115,21 @@ class MarkerC implements IMarkerC {
       editLabel.editTitle(title);
       return [INDEX, editLabel.read()];
     }
-  }
+  };
 
-}
+  private initializeLabels(labels: ILabelC[]): ILabelC[] {
+    if (!labels.length) return [];
 
+    const update_labels = [];
+    for (let label of labels) {
+      const update_label = new LabelC(label);
+      update_labels.push(update_label);
+    }
+    return update_labels;
+  };
 
-// /////////////////////////////////////////////////
+};
+
 
 
 class Storage {
@@ -161,69 +138,64 @@ class Storage {
 
   constructor() {
     this.markers = this.initialize();
-  }
+  };
 
   protected addMarker_s(data: InitMarkerData): MarkerC {
     const marker = new MarkerC(data);
 
     this.markers.push(marker);
 
-    this.saveMarkers(this.markers);
+    this.saveMarkers();
     return marker;
-  }
+  };
 
   protected addLabel_s(marker_id: string, title: string): MarkerCortege | undefined {
     const [marker, m_ind, okay] = this.find(marker_id);
     if (okay) {
       marker!.addLabel(title);
-      this.saveMarkers(this.markers);
+      this.saveMarkers();
       return [marker!, m_ind!];
     }
-  }
+  };
 
   protected getAllMarkers() {
     return [...this.markers];
-  }
+  };
 
   protected updateMarkerTitle_s(title: string, id: string): EditMarkerData | undefined {
     const [marker, m_index, okay] = this.find(id);
-
     if (okay) {
       marker!.editTitle(title);
-      this.saveMarkers(this.markers);
+      this.saveMarkers();
       return { marker: marker!, m_inx: m_index! };
     }
-
-  }
+  };
 
   protected updateLableTitle_s(title: string, marker_id: string, label_id: string): EditLabelData | undefined {
     const [marker, m_index, okay] = this.find(marker_id);
     if (okay) {
       const [l_inx, label] = marker!.editLabelTitle(label_id, title)!;
-      this.saveMarkers(this.markers);
+      this.saveMarkers();
       return { label, l_inx, m_inx: m_index! };
     }
-  }
+  };
 
   protected removeMarker_s(marker_id: string) {
     const markers = this.markers.filter(
       marker => marker.id !== marker_id
     );
     this.markers = markers;
-    this.saveMarkers(this.markers);
-  }
-
+    this.saveMarkers();
+  };
 
   protected removeLabel_s(marker_id: string, label_id: string): MarkerCortege | undefined {
     const [marker, m_ind, okay] = this.find(marker_id);
-
-
     if (okay) {
       marker!.deleteLabel(label_id);
-      this.saveMarkers(this.markers);
+      this.saveMarkers();
       return [marker!, m_ind!];
     }
-  }
+  };
 
   private find(marker_id: string): [MarkerC | null, number | null, boolean] {
     let INDEX: number;
@@ -244,7 +216,7 @@ class Storage {
       return [marker, INDEX!, okay];
     }
     return [null, null, okay];
-  }
+  };
 
 
   private initialize(): MarkerC[] {
@@ -264,52 +236,54 @@ class Storage {
       update_markers.push(update_marker);
     }
     return update_markers;
-  }
+  };
 
-  private saveMarkers(value: MarkerC[]): void {
-    this.markers = value;
-    sessionStorage.setItem(this.sessionKey, JSON.stringify(value));
+  private saveMarkers(value?: []): void {
+    sessionStorage.setItem(this.sessionKey, JSON.stringify(value || this.markers));
   };
 
 };
 
 
-// /////////////////////////////////////////////////
-
 
 interface IMarkerData {
-  createMarker(data: InitMarkerData): MarkerC;
+  updateLabelTitle(title: string, marker_id: string, label_id: string): EditLabelData | undefined;
+  removeLabel(marker_id: string, label_id: string): MarkerCortege | undefined;
+  createLabel(marker_id: string, title: string): MarkerCortege | undefined;
   updateMarkerTitle(title: string, id: string): void;
-}
+  createMarker(data: InitMarkerData): MarkerC;
+  removeMarker(marker_id: string): void;
+  getAll(): MarkerC[];
+};
 
 export default class MarkerData extends Storage implements IMarkerData {
 
   public createMarker(data: InitMarkerData) {
     return this.addMarker_s(data);
-  }
+  };
 
   public removeMarker(marker_id: string) {
     return this.removeMarker_s(marker_id);
-  }
+  };
 
   public updateMarkerTitle(title: string, id: string) {
     return this.updateMarkerTitle_s(title, id);
-  }
+  };
 
   public createLabel(marker_id: string, title: string) {
     return this.addLabel_s(marker_id, title);
-  }
+  };
 
   public removeLabel(marker_id: string, label_id: string) {
     return this.removeLabel_s(marker_id, label_id);
-  }
+  };
 
   public updateLabelTitle(title: string, marker_id: string, label_id: string) {
     return this.updateLableTitle_s(title, marker_id, label_id);
-  }
+  };
 
   public getAll() {
     return this.getAllMarkers();
-  }
+  };
 
-}
+};

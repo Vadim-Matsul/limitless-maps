@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { MapContext } from '../../service/context/ContextProvider';
@@ -19,7 +19,7 @@ import style from './Labels.module.css';
 
 const Labels: React.FC<LabelsProps> = (props) => {
   const { markers, activeMarker, dispatch, storage, isReady } = useContext(MapContext);
-  const marker = markers.find(marker => marker.id === activeMarker);
+  const marker = useMemo(() => markers.find(marker => marker.id === activeMarker), [activeMarker, markers]);
   const { className } = props;
 
   const addLabelClass = `
@@ -52,7 +52,7 @@ const Labels: React.FC<LabelsProps> = (props) => {
 
 
   return (
-    <div className={className} >
+    <div className={className} data-testid='labels' >
       {
         isReady === null
           ? <Loader isWhite={false} />

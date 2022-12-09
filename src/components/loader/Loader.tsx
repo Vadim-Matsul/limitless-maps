@@ -11,7 +11,7 @@ const Loader: React.FC<LoaderProps> = ({ isWhite = true }) => {
   return (
     <div className={style.loader_wrapper}>
       <div className={style.loader}>
-        <div style={color} />
+        <div data-testid='part' style={color} />
         <div style={color} />
       </div>
     </div>
