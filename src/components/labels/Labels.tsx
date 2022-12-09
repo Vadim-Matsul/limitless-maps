@@ -36,21 +36,17 @@ const Labels: React.FC<LabelsProps> = (props) => {
             if (!title.length) title = config.vanillaLabelTitle;
             const marker = storage.createLabel(activeMarker, title);
             marker && dispatch(ACTIONS_CREATORS.addLabel(marker));
-          },
-          () => {
-            // !........
-          }
-        );
+          });
     }
   }, [activeMarker]);
 
-  const handleEditLabel: EditHandler = useCallback((bundle) => {
-    const response = storage.editLabelTitle(bundle);
+  const handleEditLabel: EditHandler = useCallback(({ value, id, activeMarker }) => {
+    const response = storage.updateLabelTitle(value, activeMarker!, id);
     response && dispatch(ACTIONS_CREATORS.editLabelTitle(response));
   }, []);
 
   const handleDeleteLabel: DeleteHandler = useCallback((id, active) => {
-    const bundle = storage.deleteLabel(id, active!);
+    const bundle = storage.removeLabel(active!, id);
     bundle && dispatch(ACTIONS_CREATORS.deleteLabel(bundle));
   }, []);
 

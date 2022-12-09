@@ -26,12 +26,12 @@ const Marks: React.FC<MarksProps> = ({ className }) => {
   }, []);
 
   const handleEditMarker: EditHandler = useCallback(({ value, id }) => {
-    const response = storage.editMarkerTitle({ value, id });
+    const response = storage.updateMarkerTitle(value, id);
     response && dispatch(ACTIONS_CREATORS.editMarkerTitle(response));
   }, []);
 
   const handleDeleteMarker: DeleteHandler = useCallback((id) => {
-    storage.deleteMarker(id);
+    storage.removeMarker(id);
     dispatch(ACTIONS_CREATORS.deleteMarker(id));
   }, []);
 
