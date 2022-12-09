@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 
 import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { MapContext } from '../../service/context/ContextProvider';
 import { createModal } from '../map/createModal';
-import { delSpaces } from '../../helpers/utils';
+import { delSpaces } from '../../helpers/utils/utils';
 import config from '../../helpers/const';
 
 import type { DeleteHandler, EditHandler } from '../../types/types';
@@ -19,7 +19,7 @@ import style from './Labels.module.css';
 
 const Labels: React.FC<LabelsProps> = (props) => {
   const { markers, activeMarker, dispatch, storage, isReady } = useContext(MapContext);
-  const marker = markers.find(marker => marker.id === activeMarker);
+  const marker = useMemo(() => markers.find(marker => marker.id === activeMarker), [activeMarker, markers]);
   const { className } = props;
 
   const addLabelClass = `
@@ -36,27 +36,23 @@ const Labels: React.FC<LabelsProps> = (props) => {
             if (!title.length) title = config.vanillaLabelTitle;
             const marker = storage.createLabel(activeMarker, title);
             marker && dispatch(ACTIONS_CREATORS.addLabel(marker));
-          },
-          () => {
-            // !........
-          }
-        );
+          });
     }
   }, [activeMarker]);
 
-  const handleEditLabel: EditHandler = useCallback((bundle) => {
-    const response = storage.editLabelTitle(bundle);
+  const handleEditLabel: EditHandler = useCallback(({ value, id, activeMarker }) => {
+    const response = storage.updateLabelTitle(value, activeMarker!, id);
     response && dispatch(ACTIONS_CREATORS.editLabelTitle(response));
   }, []);
 
   const handleDeleteLabel: DeleteHandler = useCallback((id, active) => {
-    const bundle = storage.deleteLabel(id, active!);
+    const bundle = storage.removeLabel(active!, id);
     bundle && dispatch(ACTIONS_CREATORS.deleteLabel(bundle));
   }, []);
 
 
   return (
-    <div className={className} >
+    <div className={className} data-testid='labels' >
       {
         isReady === null
           ? <Loader isWhite={false} />

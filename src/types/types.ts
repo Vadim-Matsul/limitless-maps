@@ -12,6 +12,11 @@ export type DetailedProps<
   Element
 >;
 
+type Identity<T> = { [P in keyof T]: T[P] }
+export type Replace<T, K extends keyof T, TReplace> = Identity<Pick<T, Exclude<keyof T, K>> & {
+  [P in K]: TReplace
+}>;
+
 export type EditData = { value: string, id: string, activeMarker: A_Marker };
 export type CheckData = { id: string, location: Location };
 

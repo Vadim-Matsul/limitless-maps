@@ -8,9 +8,9 @@ import { ACTIONS_CREATORS } from '../../service/store/actions/actions';
 import { MapContext } from '../../service/context/ContextProvider';
 import config from '../../helpers/const';
 
-import Loader from '../loader/Loader';
+import Loader from '../loader';
 import Error from '../error';
-import List from '../list/List';
+import List from '../list';
 
 import style from './Marks.module.css';
 
@@ -26,18 +26,21 @@ const Marks: React.FC<MarksProps> = ({ className }) => {
   }, []);
 
   const handleEditMarker: EditHandler = useCallback(({ value, id }) => {
-    const response = storage.editMarkerTitle({ value, id });
+    const response = storage.updateMarkerTitle(value, id);
     response && dispatch(ACTIONS_CREATORS.editMarkerTitle(response));
   }, []);
 
   const handleDeleteMarker: DeleteHandler = useCallback((id) => {
-    storage.deleteMarker(id);
+    storage.removeMarker(id);
     dispatch(ACTIONS_CREATORS.deleteMarker(id));
   }, []);
 
 
   return (
-    <div className={ClassName}>
+    <div
+      className={ClassName}
+      data-testid='marks'
+    >
       <div>
         {
           isReady === null

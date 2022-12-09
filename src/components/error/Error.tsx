@@ -6,7 +6,10 @@ import style from './Error.module.css';
 
 
 const Error: React.FC = () => (
-  <div className={style.error}>
+  <div
+    className={style.error}
+    data-testid='error'
+  >
     <span>{config.errorText}</span>
   </div>
 );

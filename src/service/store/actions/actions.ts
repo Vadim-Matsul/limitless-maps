@@ -8,7 +8,7 @@ import type {
 } from '../../../types/marker';
 import type { Ready } from '../../../types/state-manager';
 
-import { narrowStringType as narrow } from '../../../helpers/utils';
+import { narrowStringType as narrow } from '../../../helpers/utils/utils';
 
 
 const AT = {

@@ -12,7 +12,10 @@ const List: React.FC<ListProps> = ({
   onCheckClick, onDelete, onEdit,
 }) => (
 
-  <div className={!isMark ? style.list__wrap : ''}>
+  <div
+    className={!isMark ? style.list__wrap : ''}
+    data-testid='list'
+  >
     <ul className={style.list}>
       {
         i_data.length

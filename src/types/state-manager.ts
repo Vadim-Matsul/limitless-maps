@@ -2,7 +2,7 @@ import type { Actions } from '../service/store/actions/actions';
 import type { Location, Markers } from './marker';
 import type { Dispatch } from 'react';
 
-import { MarkersStorage } from '../helpers/sessionStorage';
+import MarkerData from '../helpers/storage/sessionStorage';
 
 
 export type A_Marker = string | null;
@@ -25,7 +25,7 @@ export type RootState = {
 
 export type Scope = {
   dispatch: Dispatch<Actions>;
-  storage: MarkersStorage;
+  storage: MarkerData;
   activeMarker: A_Marker;
   markers: Markers;
   center: Location;
